@@ -4,6 +4,10 @@ import { HomeAssistant } from 'custom-card-helpers';
 import { PollenPulsenCardConfig, PollenData } from "./types";
 import { styles } from "./styles";
 
+/**
+ * Pollenpulsen Card
+ * A custom card for Home Assistant that displays pollen forecasts from the Pollenpulsen integration
+ */
 @customElement('pollenpulsen-card')
 export class PollenPulsenCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
@@ -11,6 +15,10 @@ export class PollenPulsenCard extends LitElement {
 
   static styles = styles;
 
+  /**
+   * Set the card configuration
+   * @param config - The card configuration
+   */
   setConfig(config: PollenPulsenCardConfig) {
     if (!config.entity) {
       throw new Error('Please define an entity');
@@ -26,6 +34,10 @@ export class PollenPulsenCard extends LitElement {
     };
   }
 
+  /**
+   * Extract pollen data from the entity state
+   * @returns Structured pollen data or null if not available
+   */
   private getPollenData(): PollenData | null {
     if (!this.hass || !this.config) {
       return null;
@@ -36,16 +48,33 @@ export class PollenPulsenCard extends LitElement {
       return null;
     }
 
-    // Hämta region från attributen - använd faktiskt regionnamn
-    const region = stateObj.attributes.region || 'Okänd region';
+    console.log("Entity state:", stateObj);
+    console.log("Entity attributes:", stateObj.attributes);
+
+    // Get region from the entity state - extract from entity_id if not available in attributes
+    let region = 'Unknown region';
     
-    // Hämta forecast från attributen
-    let forecastText = 'Ingen prognos tillgänglig';
+    // Try to get region from attributes
+    if (stateObj.attributes.region) {
+      region = stateObj.attributes.region;
+    } 
+    // If not available, try to extract from entity_id (e.g., sensor.pollenprognos_stockholm)
+    else if (this.config.entity) {
+      const entityParts = this.config.entity.split('_');
+      if (entityParts.length > 1) {
+        // Capitalize the first letter of the region
+        const regionFromEntity = entityParts[1];
+        region = regionFromEntity.charAt(0).toUpperCase() + regionFromEntity.slice(1);
+      }
+    }
+    
+    // Get forecast text
+    let forecastText = 'No forecast available';
     if (stateObj.attributes.forecast && stateObj.attributes.forecast.text) {
       forecastText = stateObj.attributes.forecast.text;
     }
     
-    // Hämta datum för prognosen
+    // Get forecast period dates
     let startDate = '';
     let endDate = '';
     if (stateObj.attributes.forecast) {
@@ -53,11 +82,11 @@ export class PollenPulsenCard extends LitElement {
       endDate = stateObj.attributes.forecast.end_date || '';
     }
     
-    // Hämta pollennivåer
+    // Get pollen levels
     const pollenLevels: any[] = [];
     if (stateObj.attributes.pollen_levels && Array.isArray(stateObj.attributes.pollen_levels)) {
       stateObj.attributes.pollen_levels.forEach((pollen: any) => {
-        // Visa endast aktiva pollen om show_inactive är false
+        // Only show active pollen types if show_inactive is false
         if (pollen.type && (this.config.show_inactive || parseInt(pollen.level) > 0)) {
           pollenLevels.push({
             type: pollen.type,
@@ -79,6 +108,11 @@ export class PollenPulsenCard extends LitElement {
     };
   }
 
+  /**
+   * Get the color for a pollen level
+   * @param level - The pollen level (0-5)
+   * @returns CSS color value
+   */
   private getLevelColor(level: number): string {
     if (level === 0) return 'var(--success-color, green)';
     if (level <= 2) return 'var(--warning-color, #f9b42d)';
@@ -86,6 +120,9 @@ export class PollenPulsenCard extends LitElement {
     return 'var(--error-color, red)';
   }
 
+  /**
+   * Render the card
+   */
   render() {
     if (!this.config || !this.hass) {
       return html``;
