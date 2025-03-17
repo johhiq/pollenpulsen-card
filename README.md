@@ -36,8 +36,10 @@ show_forecast: true
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | entity | string | **Required** | The entity_id of your Pollenpulsen sensor |
-| show_inactive | boolean | true | Show inactive pollen types |
+| show_title | boolean | true | Show the card title |
 | show_forecast | boolean | true | Show forecast text |
+| show_charts | boolean | true | Show pollen level charts |
+| show_inactive | boolean | false | Show inactive pollen types |
 
 ## Development
 

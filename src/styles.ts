@@ -10,7 +10,7 @@ export const styles = css`
   }
   
   .card-content {
-    padding: 16px;
+    padding: 0 16px 16px;
   }
   
   .header {
@@ -39,5 +39,55 @@ export const styles = css`
     width: 100px;
     height: 100px;
     margin: 0 auto;
+  }
+
+  .pollen-card {
+    padding: 16px;
+  }
+  
+  .card-header {
+    padding: 16px;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  .forecast {
+    padding: 0 0 16px 0;
+    border-bottom: 1px solid var(--divider-color, #e0e0e0);
+    margin-bottom: 16px;
+  }
+  
+  .pollen-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  
+  .pollen-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+    background: var(--card-background-color, #fff);
+  }
+  
+  .pollen-info {
+    flex: 1;
+    margin-right: 16px;
+  }
+  
+  .pollen-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .pollen-level {
+    font-size: 0.9em;
+    color: var(--secondary-text-color);
+  }
+  
+  .chart-container {
+    width: 60px;
+    height: 60px;
   }
 `;
