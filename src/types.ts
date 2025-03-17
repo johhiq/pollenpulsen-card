@@ -1,4 +1,5 @@
 export interface PollenPulsenCardConfig {
+  type: string;
   entity: string;
   show_title?: boolean;
   show_forecast?: boolean;
@@ -7,10 +8,8 @@ export interface PollenPulsenCardConfig {
 }
 
 export interface PollenData {
-  type: string;
-  type_id: number;
-  level: number;
-  description: string;
+  region: string;
+  forecast: string;
 }
 
 export type PollenLevel = 1 | 2 | 3 | 4 | 5;
