@@ -7,10 +7,15 @@ export default {
   output: {
     dir: "dist",
     format: "es",
+    sourcemap: true,
   },
   plugins: [
     resolve(),
     typescript(),
-    terser(),
+    terser({
+      format: {
+        comments: false,
+      },
+    }),
   ],
 };

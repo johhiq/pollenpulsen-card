@@ -27,6 +27,38 @@ export class PollenPulsenCardEditor extends LitElement {
           @value-changed=${this._valueChanged}
           allow-custom-entity
         ></ha-entity-picker>
+        
+        <ha-formfield .label="Show Title">
+          <ha-switch
+            .checked=${this._config.show_title ?? true}
+            .configValue=${"show_title"}
+            @change=${this._valueChanged}
+          ></ha-switch>
+        </ha-formfield>
+
+        <ha-formfield .label="Show Forecast">
+          <ha-switch
+            .checked=${this._config.show_forecast ?? true}
+            .configValue=${"show_forecast"}
+            @change=${this._valueChanged}
+          ></ha-switch>
+        </ha-formfield>
+
+        <ha-formfield .label="Show Charts">
+          <ha-switch
+            .checked=${this._config.show_charts ?? true}
+            .configValue=${"show_charts"}
+            @change=${this._valueChanged}
+          ></ha-switch>
+        </ha-formfield>
+
+        <ha-formfield .label="Show Inactive">
+          <ha-switch
+            .checked=${this._config.show_inactive ?? false}
+            .configValue=${"show_inactive"}
+            @change=${this._valueChanged}
+          ></ha-switch>
+        </ha-formfield>
       </div>
     `;
   }
@@ -37,15 +69,17 @@ export class PollenPulsenCardEditor extends LitElement {
     }
     const target = ev.target as any;
     const configValue = target.configValue as keyof PollenPulsenCardConfig;
-    if (this._config[configValue] === target.value) {
+    const value = target.checked ?? target.value;
+    
+    if (this._config[configValue] === value) {
       return;
     }
-    if (configValue) {
-      this._config = {
-        ...this._config,
-        [configValue]: target.value,
-      };
-    }
+
+    this._config = {
+      ...this._config,
+      [configValue]: value,
+    };
+
     const event = new CustomEvent("config-changed", {
       detail: { config: this._config },
     });
