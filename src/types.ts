@@ -3,16 +3,30 @@ export interface PollenPulsenCardConfig {
   entity: string;
   show_title?: boolean;
   show_forecast?: boolean;
+  show_forecast_period?: boolean;
   show_charts?: boolean;
   show_inactive?: boolean;
 }
 
-export interface PollenData {
-  region: string;
-  forecast: string;
+export interface PollenForecast {
+  text: string;
+  startDate: string;
+  endDate: string;
 }
 
-export type PollenLevel = 1 | 2 | 3 | 4 | 5;
+export interface PollenLevelInfo {
+  type: string;
+  level: number;
+  description: string;
+}
+
+export interface PollenData {
+  region: string;
+  forecast: PollenForecast;
+  pollenLevels: PollenLevelInfo[];
+}
+
+export type PollenLevelValue = 1 | 2 | 3 | 4 | 5;
 
 export interface PollenTypeConfig {
   name: string;
@@ -30,6 +44,7 @@ export interface ColorConfig {
 export const DEFAULT_CONFIG: Partial<PollenPulsenCardConfig> = {
   show_title: true,
   show_forecast: true,
+  show_forecast_period: true,
   show_charts: true,
   show_inactive: false,
 };

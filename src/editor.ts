@@ -43,6 +43,14 @@ export class PollenPulsenCardEditor extends LitElement {
             @change=${this._valueChanged}
           ></ha-switch>
         </ha-formfield>
+        
+        <ha-formfield .label="Show Forecast Period">
+          <ha-switch
+            .checked=${this._config.show_forecast_period ?? true}
+            .configValue=${"show_forecast_period"}
+            @change=${this._valueChanged}
+          ></ha-switch>
+        </ha-formfield>
 
         <ha-formfield .label="Show Charts">
           <ha-switch
