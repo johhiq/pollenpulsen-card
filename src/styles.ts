@@ -72,6 +72,7 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: var(--chart-size);
     height: 120px;
   }
@@ -93,6 +94,7 @@ export const styles = css`
     font-weight: 500;
     margin-top: 0px;
     text-align: center;
+    width: 100%;
   }
 
   .pollen-level {
@@ -100,6 +102,7 @@ export const styles = css`
     opacity: 0.8;
     margin-top: 2px;
     text-align: center;
+    width: 100%;
   }
 
   /* SVG element */
@@ -107,7 +110,7 @@ export const styles = css`
     display: block;
     width: 100px;
     height: 100px;
-    margin-bottom: 0px;
+    margin: 0 auto;
   }
 
   /**
