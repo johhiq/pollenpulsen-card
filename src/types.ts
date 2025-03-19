@@ -1,18 +1,21 @@
+import { CARD_TYPE, CARD_SHOW_FORECAST, CARD_SHOW_INACTIVE } from './const';
+
 /**
  * Configuration options for the Pollenpulsen card
  */
 export interface PollenPulsenCardConfig {
   type: string;
   entity: string;
-  show_title?: boolean;
-  show_forecast?: boolean;
-  show_forecast_period?: boolean;
-  show_charts?: boolean;
-  show_inactive?: boolean;
+  name?: string;
+  show_header?: boolean;    // Toggle headline
+  show_forecast?: boolean;  // Toggle forecast text
+  show_period?: boolean;    // Toggle period display
+  show_charts?: boolean;    // Toggle charts/graphs
+  show_inactive?: boolean;  // Toggle inactive pollen types
 }
 
 /**
- * Forecast information
+ * Forecast information from the sensor
  */
 export interface PollenForecast {
   text: string;
@@ -21,7 +24,7 @@ export interface PollenForecast {
 }
 
 /**
- * Information about a specific pollen type
+ * Information about a specific pollen type and its level
  */
 export interface PollenLevelInfo {
   type: string;
@@ -30,7 +33,7 @@ export interface PollenLevelInfo {
 }
 
 /**
- * Complete pollen data structure
+ * Complete pollen data structure from the sensor
  */
 export interface PollenData {
   region: string;
@@ -39,30 +42,29 @@ export interface PollenData {
 }
 
 /**
- * Possible pollen level values
+ * Valid pollen level values (0-6 where 0 means inactive)
  */
-export type PollenLevelValue = 1 | 2 | 3 | 4 | 5;
+export type PollenLevelValue = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+/**
+ * Configuration for how to display a specific pollen type
+ */
 export interface PollenTypeConfig {
   name: string;
   icon?: string;
   show: boolean;
 }
 
-export interface ColorConfig {
-  none: string;
-  low: string;
-  medium: string;
-  high: string;
-}
-
 /**
- * Default configuration values
+ * Default configuration values, using constants from const.ts
  */
-export const DEFAULT_CONFIG: Partial<PollenPulsenCardConfig> = {
-  show_title: true,
+export const DEFAULT_CONFIG: PollenPulsenCardConfig = {
+  type: CARD_TYPE,
+  entity: '',
+  name: 'Pollen',
+  show_header: true,
   show_forecast: true,
-  show_forecast_period: true,
+  show_period: true,
   show_charts: true,
   show_inactive: false,
 };

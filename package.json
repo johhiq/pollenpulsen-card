@@ -12,7 +12,6 @@
   "author": "johhiq",
   "license": "MIT",
   "dependencies": {
-    "chart.js": "^4.4.1",
     "custom-card-helpers": "^1.9.0",
     "lit": "^3.1.0"
   },

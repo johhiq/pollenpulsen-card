@@ -5,12 +5,12 @@ import { terser } from "rollup-plugin-terser";
 export default {
   input: "src/pollenpulsen-card.ts",
   output: {
-    dir: "dist",
+    file: "dist/pollenpulsen-card.js",
     format: "es",
     sourcemap: true,
   },
   plugins: [
-    resolve(),
+    resolve({ browser: true }),
     typescript(),
     terser({
       format: {
