@@ -1,3 +1,24 @@
-dist/
+# dependencies
 node_modules/
+
+# build output
+dist/
+
+# IDE and OS files
 .DS_Store
+.idea/
+.vscode/
+*.log
+*.swp
+*~
+
+# environment files
+.env
+.env.*
+
+# test coverage
+coverage/
+
+# temporary files
+*.tmp
+*.temp

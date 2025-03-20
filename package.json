@@ -11,6 +11,23 @@
   },
   "author": "johhiq",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johhiq/pollenpulsen-card.git"
+  },
+  "keywords": [
+    "home-assistant",
+    "homeassistant",
+    "hass",
+    "automation",
+    "lovelace",
+    "custom-cards",
+    "pollen"
+  ],
+  "bugs": {
+    "url": "https://github.com/johhiq/pollenpulsen-card/issues"
+  },
+  "homepage": "https://github.com/johhiq/pollenpulsen-card#readme",
   "dependencies": {
     "custom-card-helpers": "^1.9.0",
     "lit": "^3.1.0"
