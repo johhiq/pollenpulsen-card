@@ -34,16 +34,18 @@ export const styles = css`
    * Header and forecast section
    */
   .pollen-header {
+    text-align: left;
     margin-bottom: 16px;
   }
 
   .region-name {
-    font-size: 18px;
+    font-size: 1.5em;
     font-weight: 500;
   }
 
   .forecast-section {
     margin-bottom: 16px;
+    text-align: left;
   }
 
   .forecast-text {
@@ -51,7 +53,7 @@ export const styles = css`
   }
 
   .forecast-period {
-    font-size: 14px;
+    font-size: 0.7em;
     opacity: 0.8;
   }
 
@@ -93,9 +95,8 @@ export const styles = css`
   .pollen-type {
     font-size: 16px;
     font-weight: 500;
-    margin-top: 0px;
+    margin-top: 4px;
     text-align: center;
-    width: 100%;
   }
 
   .pollen-level {
@@ -103,7 +104,6 @@ export const styles = css`
     opacity: 0.8;
     margin-top: 2px;
     text-align: center;
-    width: 100%;
   }
 
   /* SVG element */
@@ -111,7 +111,7 @@ export const styles = css`
     display: block;
     width: 100px;
     height: 100px;
-    margin: 0 auto;
+    margin-bottom: 4px;
   }
 
   /**
@@ -137,5 +137,37 @@ export const styles = css`
   .warning {
     padding: 16px;
     color: var(--error-color, red);
+  }
+
+  .inactive-pollen {
+    margin-top: 16px;
+  }
+
+  .inactive-header {
+    margin-bottom: 8px;
+  }
+
+  .inactive-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  .inactive-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .inactive-item svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .inactive-item span {
+    margin-top: 4px;
+    font-size: 0.9em;
+    text-align: center;
   }
 `;

@@ -5,14 +5,15 @@ import { CARD_TYPE, CARD_SHOW_FORECAST, CARD_SHOW_INACTIVE } from './const';
  */
 export interface PollenPulsenCardConfig {
   type: string;
+  name: string;
   entity: string;
-  name?: string;
   show_header?: boolean;      // Toggle headline
   show_forecast?: boolean;    // Toggle forecast text
   show_period?: boolean;      // Toggle period display
   show_charts?: boolean;      // Toggle charts/graphs
-  show_inactive?: boolean;    // Toggle inactive pollen types
-  show_pollen_icon?: boolean; // Toggle pollen icon
+  show_all_charts?: boolean;  // Show all pollen types in charts (including level 0)
+  show_pollen_icon?: boolean; // Toggle pollen icon in charts
+  show_inactive_summary?: boolean; // Show list of inactive pollen types
 }
 
 /**
@@ -61,12 +62,13 @@ export interface PollenTypeConfig {
  */
 export const DEFAULT_CONFIG: PollenPulsenCardConfig = {
   type: CARD_TYPE,
-  entity: '',
   name: 'PollenPulsen',
+  entity: '',
   show_header: true,
   show_forecast: true,
   show_period: true,
   show_charts: true,
-  show_inactive: false,
+  show_all_charts: false,
   show_pollen_icon: true,
+  show_inactive_summary: false,
 };

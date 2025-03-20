@@ -9,7 +9,8 @@ import {
   CARD_DEFAULT_CONFIG,
   POLLEN_COLORS,
   SVG_SEGMENT_PATH,
-  CHART_CONFIG
+  CHART_CONFIG,
+  POLLEN_DISPLAY_NAMES
 } from './const';
 import { styles } from './styles';
 import { 
@@ -104,13 +105,25 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
   private processPollenLevels(rawLevels: any[]): PollenLevelInfo[] {
     if (!Array.isArray(rawLevels)) return [];
 
-    return rawLevels
-      .filter(pollen => this.config.show_inactive || (parseInt(pollen.level) > 0))
-      .map(pollen => ({
-        type: pollen.type,
-        level: parseInt(pollen.level) || 0,
-        description: pollen.description || ''
-      }));
+    return rawLevels.map(pollen => ({
+      type: pollen.type,
+      level: parseInt(pollen.level) || 0,
+      description: pollen.description || ''
+    }));
+  }
+
+  private getChartsToDisplay(pollenLevels: PollenLevelInfo[]): PollenLevelInfo[] {
+    if (!this.config.show_charts) return [];
+    
+    return this.config.show_all_charts
+      ? pollenLevels
+      : pollenLevels.filter(pollen => pollen.level > 0);
+  }
+
+  private getInactivePollenList(pollenLevels: PollenLevelInfo[]): PollenLevelInfo[] {
+    if (!this.config.show_inactive_summary) return [];
+    
+    return pollenLevels.filter(pollen => pollen.level === 0);
   }
 
   /**
@@ -177,7 +190,9 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
             </svg>
           ` : ''}
         </svg>
-        <div class="pollen-type">${pollen.type}</div>
+        <div class="pollen-type">
+          ${POLLEN_DISPLAY_NAMES[pollen.type] || pollen.type}
+        </div>
         <div class="pollen-level">${this.getLevelText(level)}</div>
       </div>
     `;
@@ -204,6 +219,9 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
       return html`<ha-card>No data available</ha-card>`;
     }
 
+    const chartsToDisplay = this.getChartsToDisplay(pollenData.pollenLevels);
+    const inactivePollenList = this.getInactivePollenList(pollenData.pollenLevels);
+
     return html`
       <ha-card>
         <div class="card-content">
@@ -226,9 +244,32 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
 
           ${this.config.show_charts ? html`
             <div class="pollen-charts">
-              ${pollenData.pollenLevels.map(pollen => 
+              ${chartsToDisplay.map(pollen => 
                 this.renderDonutChart(pollen)
               )}
+            </div>
+          ` : ''}
+
+          ${this.config.show_inactive_summary && inactivePollenList.length > 0 ? html`
+            <div class="inactive-pollen">
+              <div class="inactive-header">Inga pollenhalter rapporterade för:</div>
+              <div class="inactive-list">
+                ${inactivePollenList.map(pollen => html`
+                  <div class="inactive-item">
+                    <svg 
+                      viewBox="0 0 50 50" 
+                      width="20"
+                      height="20"
+                    >
+                      <path 
+                        d="${POLLEN_ICONS[pollen.type]}"
+                        fill="${POLLEN_COLORS.INACTIVE_ICON}"
+                      />
+                    </svg>
+                    <span>${POLLEN_DISPLAY_NAMES[pollen.type] || pollen.type}</span>
+                  </div>
+                `)}
+              </div>
             </div>
           ` : ''}
         </div>
