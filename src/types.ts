@@ -43,9 +43,9 @@ export interface PollenData {
 }
 
 /**
- * Valid pollen level values (0-6 where 0 means inactive)
+ * Valid pollen level values (0-7 where 0 means no values)
  */
-export type PollenLevelValue = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type PollenLevelValue = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 /**
  * Configuration for how to display a specific pollen type
@@ -62,7 +62,7 @@ export interface PollenTypeConfig {
 export const DEFAULT_CONFIG: PollenPulsenCardConfig = {
   type: CARD_TYPE,
   entity: '',
-  name: 'Pollen',
+  name: 'PollenPulsen',
   show_header: true,
   show_forecast: true,
   show_period: true,

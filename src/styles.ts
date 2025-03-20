@@ -60,9 +60,9 @@ export const styles = css`
    */
   .pollen-charts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: var(--chart-gap);
-    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 16px;
+    width: 100%;
   }
 
   /**
@@ -72,9 +72,10 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: var(--chart-size);
-    height: 120px;
+    min-width: 100px;
+    max-width: 150px;
+    width: 100%;
+    margin: 0 auto;
   }
 
   .pollen-chart svg {

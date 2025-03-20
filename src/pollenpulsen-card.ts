@@ -1,6 +1,7 @@
 import { LitElement, html, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { HomeAssistant, hasConfigOrEntityChanged, LovelaceCard } from 'custom-card-helpers';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import {
   CARD_NAME,
   CARD_VERSION,
@@ -17,6 +18,7 @@ import {
   PollenLevelInfo,
   PollenLevelValue 
 } from './types';
+import { POLLEN_ICONS } from './pollenIcons';
 
 // Card initialization logging
 console.info(
@@ -117,12 +119,13 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
   private getLevelText(level: PollenLevelValue): string {
     const levelTexts = {
       0: "Inga halter",
-      1: "Låga halter",
-      2: "Låga-måttliga halter",
-      3: "Måttliga halter",
-      4: "Måttliga-höga halter",
-      5: "Höga halter",
-      6: "Höga halter"
+      1: "Låga",
+      2: "Låga till måttliga",
+      3: "Måttliga",
+      4: "Måttliga till höga",
+      5: "Höga",
+      6: "Höga till mycket höga",
+      7: "Mycket höga"
     };
     return levelTexts[level] || "Okänd nivå";
   }
@@ -130,34 +133,51 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
   /**
    * Renders a donut chart showing pollen levels
    */
-  private renderDonutChart(pollenType: string, level: PollenLevelValue): TemplateResult {
+  private renderDonutChart(pollen: PollenLevelInfo): TemplateResult {
+    const level = pollen.level as PollenLevelValue;
+    
     return html`
       <div class="pollen-chart">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          width="100" 
-          height="100"
-          viewBox="0 0 90 90"
+          width="${CHART_CONFIG.SIZE}" 
+          height="${CHART_CONFIG.SIZE}"
+          viewBox="0 0 ${CHART_CONFIG.SIZE} ${CHART_CONFIG.SIZE}"
         >
           <path d="${SVG_SEGMENT_PATH}" 
-                fill="${level > 0 ? POLLEN_COLORS.LEVEL_1 : POLLEN_COLORS.INACTIVE}" />
+                fill="${level >= 1 ? POLLEN_COLORS.LEVEL_1 : POLLEN_COLORS.INACTIVE}" />
           <path d="${SVG_SEGMENT_PATH}" 
-                fill="${level > 1 ? POLLEN_COLORS.LEVEL_2 : POLLEN_COLORS.INACTIVE}" 
+                fill="${level >= 2 ? POLLEN_COLORS.LEVEL_2 : POLLEN_COLORS.INACTIVE}" 
                 transform="rotate(60, ${CHART_CONFIG.CENTER}, ${CHART_CONFIG.CENTER})" />
           <path d="${SVG_SEGMENT_PATH}" 
-                fill="${level > 2 ? POLLEN_COLORS.LEVEL_3 : POLLEN_COLORS.INACTIVE}" 
+                fill="${level >= 3 ? POLLEN_COLORS.LEVEL_3 : POLLEN_COLORS.INACTIVE}" 
                 transform="rotate(120, ${CHART_CONFIG.CENTER}, ${CHART_CONFIG.CENTER})" />
           <path d="${SVG_SEGMENT_PATH}" 
-                fill="${level > 3 ? POLLEN_COLORS.LEVEL_4 : POLLEN_COLORS.INACTIVE}" 
+                fill="${level >= 4 ? POLLEN_COLORS.LEVEL_4 : POLLEN_COLORS.INACTIVE}" 
                 transform="rotate(180, ${CHART_CONFIG.CENTER}, ${CHART_CONFIG.CENTER})" />
           <path d="${SVG_SEGMENT_PATH}" 
-                fill="${level > 4 ? POLLEN_COLORS.LEVEL_5 : POLLEN_COLORS.INACTIVE}" 
+                fill="${level >= 5 ? POLLEN_COLORS.LEVEL_5 : POLLEN_COLORS.INACTIVE}" 
                 transform="rotate(240, ${CHART_CONFIG.CENTER}, ${CHART_CONFIG.CENTER})" />
           <path d="${SVG_SEGMENT_PATH}" 
-                fill="${level > 5 ? POLLEN_COLORS.LEVEL_6 : POLLEN_COLORS.INACTIVE}" 
+                fill="${level >= 6 ? POLLEN_COLORS.LEVEL_6 : POLLEN_COLORS.INACTIVE}" 
                 transform="rotate(300, ${CHART_CONFIG.CENTER}, ${CHART_CONFIG.CENTER})" />
+
+          ${this.config.show_pollen_icon ? html`
+            <svg 
+              x="35"
+              y="35"
+              width="30"
+              height="30"
+              viewBox="0 0 50 50"
+            >
+              <path 
+                d="${POLLEN_ICONS[pollen.type]}"
+                fill="${level >= 1 ? POLLEN_COLORS[`LEVEL_${level}` as keyof typeof POLLEN_COLORS] : POLLEN_COLORS.INACTIVE}"
+              />
+            </svg>
+          ` : ''}
         </svg>
-        <div class="pollen-type">${pollenType}</div>
+        <div class="pollen-type">${pollen.type}</div>
         <div class="pollen-level">${this.getLevelText(level)}</div>
       </div>
     `;
@@ -207,7 +227,7 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
           ${this.config.show_charts ? html`
             <div class="pollen-charts">
               ${pollenData.pollenLevels.map(pollen => 
-                this.renderDonutChart(pollen.type, pollen.level as PollenLevelValue)
+                this.renderDonutChart(pollen)
               )}
             </div>
           ` : ''}

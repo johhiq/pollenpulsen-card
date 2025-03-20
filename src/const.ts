@@ -53,4 +53,9 @@ export const CHART_CONFIG = {
     OUTER_RADIUS: 35,
     INNER_RADIUS: 20,
     SEGMENT_ANGLE: 60,
+    ICON: {
+        SIZE: 30,
+        X: 35,
+        Y: 35
+    }
 } as const;
