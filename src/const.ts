@@ -60,9 +60,9 @@ export const CARD_DEFAULT_CONFIG = {
 
 /**
  * SVG path data for donut chart segments
- * Starts at 3 degrees instead of 0 to create perfect vertical gaps
+ * Using precise calculations to create perfect circular segments
  */
-export const SVG_SEGMENT_PATH = "M 50 16.1 A 35 35 0 0 1 78.3 30.3 L 66.2 38.7 A 20 20 0 0 0 50 30.6 Z";
+export const SVG_SEGMENT_PATH = "M 50 15 A 35 35 0 0 1 77.32 28.87 L 65.31 37.27 A 20 20 0 0 0 50 30 Z";
 
 /**
  * Chart dimensions and layout configuration
