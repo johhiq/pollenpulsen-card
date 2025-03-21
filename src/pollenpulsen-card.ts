@@ -62,6 +62,19 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
   }
 
   /**
+   * Extracts region name from entity ID if not provided in attributes
+   */
+  private extractRegionFromEntity(): string {
+    if (!this.config.entity) return 'Unknown region';
+    
+    const entityParts = this.config.entity.split('_');
+    if (entityParts.length <= 1) return 'Unknown region';
+    
+    const regionFromEntity = entityParts[1];
+    return regionFromEntity.charAt(0).toUpperCase() + regionFromEntity.slice(1);
+  }
+
+  /**
    * Extracts and processes pollen data from the sensor
    */
   private getPollenData(): PollenData | null {
@@ -70,8 +83,8 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
     const stateObj = this.hass.states[this.config.entity];
     if (!stateObj) return null;
 
-    // Extract region name
-    const region = stateObj.attributes.region || this.extractRegionFromEntity();
+    // Extract region name from forecast attributes
+    const region = stateObj.attributes.forecast?.region || this.extractRegionFromEntity();
     
     // Extract forecast information
     const forecast = {
@@ -84,19 +97,6 @@ export class PollenPulsenCard extends LitElement implements LovelaceCard {
     const pollenLevels = this.processPollenLevels(stateObj.attributes.pollen_levels);
 
     return { region, forecast, pollenLevels };
-  }
-
-  /**
-   * Extracts region name from entity ID if not provided in attributes
-   */
-  private extractRegionFromEntity(): string {
-    if (!this.config.entity) return 'Unknown region';
-    
-    const entityParts = this.config.entity.split('_');
-    if (entityParts.length <= 1) return 'Unknown region';
-    
-    const regionFromEntity = entityParts[1];
-    return regionFromEntity.charAt(0).toUpperCase() + regionFromEntity.slice(1);
   }
 
   /**
